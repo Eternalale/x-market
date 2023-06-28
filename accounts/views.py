@@ -2,8 +2,7 @@ from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from django.utils.translation import gettext_lazy as _
-
+from django.utils.translation import gettext as _
 
 from allauth.account.views import ConfirmEmailView
 
