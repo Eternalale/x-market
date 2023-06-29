@@ -9,6 +9,8 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
+import os
+from datetime import timedelta
 
 from pathlib import Path
 
@@ -40,7 +42,8 @@ INSTALLED_APPS = [
 
     #req
     'rest_framework',
-    'djoser',
+    'rest_framework.authtoken',
+    'rest_auth',
 
     #my apps
     'accounts',
@@ -129,13 +132,19 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Djoser
-DJOSER = {
-    'SEND_ACTIVATION_EMAIL': True,
-    'ACTIVATION_URL': 'api/v1/auth/activate/{uid}/{token}/',
-    'SERIALIZERS': {
-        'user_create': 'accounts.serializers.CustomUserCreateSerializer',
-        'user': 'accounts.serializers.CustomUserSerializer',
-        'current_user': 'accounts.serializers.CustomCurrentUserSerializer',
-    },
+AUTH_USER_MODEL = 'accounts.CustomUser'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+}
+
+# временное решение для отладки. Для реальной отправки сообщения используйте SMTP-сервер или другой пакет
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+REST_AUTH_REGISTER_VERIFICATION_ENABLED = True
+REST_AUTH_REGISTER_VERIFICATION_URL = 'email-verification'
+REST_AUTH_SERIALIZERS = {
+    'REGISTER_SERIALIZER': 'path.to.serializers.CustomRegisterSerializer',
 }
